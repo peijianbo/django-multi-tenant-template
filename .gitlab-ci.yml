@@ -1,0 +1,67 @@
+stages:
+  - pull(uat)
+  - build(uat)
+  - restart(uat)
+  - pull(prod)
+  - restart(prod)
+
+pull(uat):
+  stage: pull(uat)
+  tags:
+    - '192.168.10.21-uat-project'
+  rules: # 仅uat分支打tag时触发,runner会自动识别在哪个分支打的tag,然后拉取对应分支代码
+    - if: '$CI_COMMIT_TAG =~ /^uat-[0-9]+\.[0-9]+\.[0-9]+(-build)?$/'
+  script:
+    - cd /data/itom-project
+    - git checkout uat
+    - git pull
+    - git checkout $CI_COMMIT_TAG
+  allow_failure: false
+
+build(uat): #步骤前面加.可以跳过此步骤
+   stage: build(uat)
+   tags:
+     - '192.168.10.21-uat-project'
+   rules:
+    - if: '$CI_COMMIT_TAG =~ /^uat-[0-9]+\.[0-9]+\.[0-9]+-build$/'
+   script:
+     - cd /data/itom-project/docker_files
+     - sh ./build.sh
+   allow_failure: false
+
+restart(uat):
+   stage: restart(uat)
+   tags:
+     - '192.168.10.21-uat-project'
+   rules:
+    - if: '$CI_COMMIT_TAG =~ /^uat-[0-9]+\.[0-9]+\.[0-9]+(-build)?$/'
+   script:
+     - cd  /data/itom-project
+     - docker-compose up -d --force-recreate
+   allow_failure: false
+
+pull(prod):
+  stage: pull(prod)
+  tags:
+    - '114.115.152.172-prod-project'
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^prod-[0-9]+\.[0-9]+\.[0-9]+$/'
+      when: manual #人工介入部署
+  script:
+    - cd /data/itom-project
+    - git checkout master
+    - git pull
+    - git checkout $CI_COMMIT_TAG
+  allow_failure: false
+
+restart(prod):
+   stage: restart(prod)
+   tags:
+     - '114.115.152.172-prod-project'
+   rules:
+     - if: '$CI_COMMIT_TAG =~ /^prod-[0-9]+\.[0-9]+\.[0-9]+$/'
+       when: manual #人工介入部署
+   script:
+     - cd  /data/itom-project
+     - docker-compose up -d --force-recreate
+   allow_failure: false

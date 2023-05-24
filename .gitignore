@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+*.pyc
+__pycache__
+itom_project/logs/*
+*.log
+venv/
+.DS_Store
+itom_project/itom_project/apps/*/migrations
+itom_project/static/*
+docker_files/mysql/data/*
+docker_files/mysql/logs/*
