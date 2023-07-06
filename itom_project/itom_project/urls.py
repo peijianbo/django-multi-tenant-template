@@ -23,5 +23,5 @@ api_v1 = [
 
 urlpatterns = [
     path(f'{settings.ADMIN_PREFIX}/', admin.site.urls),
-    path(f'api/v1/', include(api_v1)),
+    path(f'project/api/v1/', include(api_v1)),
 ]

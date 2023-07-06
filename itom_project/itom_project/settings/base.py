@@ -52,9 +52,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'itom_project.libs.frameworks.middlewares.DjangoAdminSupportMiddleWare',
+    # 'itom_project.libs.frameworks.middlewares.DjangoAdminSupportMiddleWare',
     # 'itom_project.libs.frameworks.middlewares.AuthenticationMiddleWare',
-    'itom_project.libs.frameworks.middlewares.CacheTenantMiddleWare',
+    # 'itom_project.libs.frameworks.middlewares.CacheTenantMiddleWare',
 ]
 
 TEMPLATES = [
@@ -88,6 +88,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
     'EXCEPTION_HANDLER': 'itom_project.libs.frameworks.exception_handler.exception_handler',
+    'DEFAULT_METADATA_CLASS': 'itom_project.libs.frameworks.simple_metadata.SimpleMetadataWithFilters',
 
 }
 

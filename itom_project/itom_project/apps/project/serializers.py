@@ -3,8 +3,7 @@ from itom_project.libs.frameworks.serializers import DisplayModelSerializer, Mod
 from .models import Project
 
 
-class ProjectSerializer(ModifierModelSerializer,
-                        DisplayModelSerializer):
+class ProjectSerializer(DisplayModelSerializer):
 
     class Meta:
         model = Project
